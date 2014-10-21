@@ -15,7 +15,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Source the vimrc with all plugins
-so .vimrc.plugins
+so ~/.vimrc.plugins
 
 call neobundle#end()
 " -- end
