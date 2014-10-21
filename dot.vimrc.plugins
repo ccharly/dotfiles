@@ -16,5 +16,7 @@ NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'elzr/vim-json'
 NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'myhere/vim-nodejs-complete'
+NeoBundle 'tomtom/tlib_vim.git' 		" required by vim-snipmate
+NeoBundle 'MarcWeber/vim-addon-mw-utils' 	" required by vim-snipmate
 NeoBundle 'garbas/vim-snipmate'
 NeoBundle 'honza/vim-snippets'
