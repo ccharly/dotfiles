@@ -139,6 +139,8 @@ let g:airline#extensions#tabline#enabled = 1	" make tab looks like vim in termin
 " ctrl-p
 " --------------------------------------
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+" Set a custom ignore
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(sw.|ico|git|svn))$'
 
 " nerd commenter
 " --------------------------------------
