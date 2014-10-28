@@ -4,8 +4,7 @@ NeoBundle 'editorconfig/editorconfig-vim'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'majutsushi/tagbar'
-NeoBundle 'marijnh/tern_for_vim'
-NeoBundle 'leafgarland/typescript-vim'
+"NeoBundle 'marijnh/tern_for_vim'
 NeoBundle 'mbbill/undotree'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'tpope/vim-eunuch'
@@ -20,3 +19,8 @@ NeoBundle 'tomtom/tlib_vim.git' 		" required by vim-snipmate
 NeoBundle 'MarcWeber/vim-addon-mw-utils' 	" required by vim-snipmate
 NeoBundle 'garbas/vim-snipmate'
 NeoBundle 'honza/vim-snippets'
+
+NeoBundle 'leafgarland/typescript-vim'
+NeoBundle 'clausreinke/typescript-tools', {
+  \   'build': { 'mac': 'npm install -g' }
+  \ }

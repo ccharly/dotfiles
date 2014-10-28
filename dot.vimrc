@@ -1,5 +1,3 @@
-set nocompatible               " Be iMproved
-
 " Required:
 " --------------------------------------
 " everything in that block is required
@@ -30,6 +28,7 @@ NeoBundleCheck
 
 " Basic setup
 syntax on
+set expandtab
 filetype plugin indent on
 
 " Current colorscheme
@@ -38,6 +37,9 @@ colorscheme hybrid
 
 " Set mapleader
 let mapleader="\<Space>"
+
+" Remove trailling whitespaces
+autocmd FileType c,cpp,java,php,ocaml,python,javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " Fonts (powerline)
 set guifont=Source\ Code\ Pro\ for\ Powerline:h14
@@ -91,8 +93,8 @@ nnoremap L :tabn<CR>
 map j gj
 map k gk
 " Auto close buffer when quitting/closing a file
-cnoreabbrev wq w<bar>bd<bar>q
-cnoreabbrev q bd<bar>q
+"cnoreabbrev wq w<bar>bd<bar>q
+"cnoreabbrev q bd<bar>q
 " Shortcut to rapidly toggle `set list`
 nmap <leader>l :set list!<CR>
 " Toggle folds on enter key
@@ -107,15 +109,20 @@ nmap <leader>l :set list!<CR>
 nnoremap <c-f> :TagbarToggle<CR>
 " Auto open for TagBar
 autocmd VimEnter * nested :call tagbar#autoopen(1)
+let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 
 " syntastic
 " --------------------------------------
 let g:syntastic_check_on_open=1
+let g:syntastic_enable_signs=1
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=2
+" let g:syntastic_debug=1 " useful when debugging syntastic
 
 " YCM
 " --------------------------------------
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm.py'
+let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_confirm_extra_conf = 0
 set completeopt-=preview
 let g:ycm_register_as_syntastic_checker = 1
@@ -129,12 +136,13 @@ let g:ycm_warning_symbol = 'W>'
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_complete_in_strings = 1
 
 " vim-airline setup
 " --------------------------------------
 set laststatus=2 								" force display of status bar
 let g:airline_powerline_fonts = 1 				" powerline for status bar or tabline
-let g:airline#extensions#tabline#enabled = 1	" make tab looks like vim in terminal
+"let g:airline#extensions#tabline#enabled = 1	" make tab looks like vim in terminal
 
 " ctrl-p
 " --------------------------------------
@@ -170,20 +178,47 @@ nmap <Leader><Leader> <Leader>c
 " let NERDTreeIgnore+=['\(\.hh\)\\1$[[file]]']
 
 " Languages:
-" -- javascript
-" --------------------------------------
-set t_Co=256
-
 " -- node.js
 " --------------------------------------
 " To make everything working fine with YCM and similar stuffs
-let g:nodejs_complete_config = { 'js_compl_fn': 'tern#Complete' }
+" let g:nodejs_complete_config = { 'js_compl_fn': 'tern#Complete' }
 let g:syntastic_javascript_checkers = ['jshint']
+au FileType javascript setl omnifunc=nodejscomplete#CompleteJS
 
 " -- typescript
 " --------------------------------------
 let g:syntastic_typescript_checkers = ['tslint']
+au FileType typescript setl omnifunc=TSScompleteFunc
+
+" -- md
+" --------------------------------------
+au FileType markdown   setl omnifunc=htmlcomplete#CompleteTags formatoptions=tcroqn2 comments=n:>
+
+" -- json
+" --------------------------------------
+let g:syntastic_json_checkers = ['jsonlint']
 
 " -- cpp
 " --------------------------------------
 let g:syntastic_cpp_compiler_options=' -std=c++11 -stdlib=libc++'
+
+" -- python
+" --------------------------------------
+au FileType python     setl shiftwidth=4 softtabstop=4 tabstop=4
+
+" Fonts
+" --------------------------------------
+" https://coderwall.com/p/yiot4q
+" --------------------------------------
+set t_Co=256
+set encoding=utf-8
+let g:Powerline_symbols = 'fancy'
+set fillchars+=stl:\ ,stlnc:\
+
+NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+if has("gui_running")
+else
+	set term=xterm-256color
+	set termencoding=utf-8
+endif
