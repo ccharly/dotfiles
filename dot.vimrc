@@ -42,7 +42,7 @@ let mapleader="\<Space>"
 autocmd FileType c,cpp,java,php,ocaml,python,javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " Fonts (powerline)
-set guifont=Source\ Code\ Pro\ for\ Powerline:h14
+set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 " Get rid of scrollbars
 set guioptions=emg
 
