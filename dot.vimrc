@@ -152,6 +152,7 @@ let g:airline_powerline_fonts = 1 				" powerline for status bar or tabline
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 " Set a custom ignore
 let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(sw.|ico|git|svn))$'
+let g:ctrlp_working_path_mode = 'c'
 
 " nerd commenter
 " --------------------------------------
