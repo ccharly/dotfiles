@@ -56,6 +56,7 @@ set ts=4			" tabstop
 set number			" show line numbers
 set colorcolumn=80  " 80 columns
 
+set nofoldenable    " disable folding
 set cursorline      " highlight cursor line
 set hlsearch        " highlight last search matches
 set incsearch       " show matches as soon as possible
