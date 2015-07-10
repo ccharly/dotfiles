@@ -205,7 +205,7 @@ let g:syntastic_cpp_compiler_options=' -std=c++11 -stdlib=libc++'
 
 " -- python
 " --------------------------------------
-au FileType python     setl shiftwidth=4 softtabstop=4 tabstop=4
+au FileType python setl shiftwidth=4 softtabstop=4 tabstop=8 expandtab
 
 " Fonts
 " --------------------------------------
