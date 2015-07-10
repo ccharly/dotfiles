@@ -90,6 +90,8 @@ hi CursorLine cterm=reverse ctermbg=4 guibg=#3A3A3A
 " Map H and L to quickly switch tabs
 nnoremap H :tabp<CR>
 nnoremap L :tabn<CR>
+" Map T to quickly add a new tab
+nnoremap T :tabe<CR>
 " Fix moving around wrapped lines
 map j gj
 map k gk
