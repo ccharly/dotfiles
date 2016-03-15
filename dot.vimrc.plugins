@@ -24,3 +24,10 @@ NeoBundle 'leafgarland/typescript-vim'
 NeoBundle 'clausreinke/typescript-tools', {
   \   'build': { 'mac': 'npm install -g' }
   \ }
+
+NeoBundle 'embear/vim-localvimrc'
+NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'scheakur/vim-scheakur'
+
+NeoBundle 'vim-scripts/Align'
+NeoBundle 'vim-scripts/Boost-Build-v2-BBv2-syntax'

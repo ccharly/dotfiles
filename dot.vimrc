@@ -2,6 +2,8 @@
 " --------------------------------------
 " everything in that block is required
 
+set nocompatible
+
 if has('vim_starting')
 	set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
@@ -15,12 +17,15 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Source the vimrc with all plugins
 so ~/.vimrc.plugins
 
-call neobundle#end()
-" -- end
-
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
 NeoBundleCheck
+
+" PowerLine
+NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+call neobundle#end()
+" -- end
 
 " Required: end
 " --------------------------------------
@@ -32,8 +37,9 @@ set expandtab
 filetype plugin indent on
 
 " Current colorscheme
-set background=dark
-colorscheme hybrid
+set bg=light
+colorscheme molokai
+"colorscheme hybrid
 
 " Set mapleader
 let mapleader="\<Space>"
@@ -53,8 +59,9 @@ set wrap			" show all the lines even if they overflow out of the screen
 
 set sw=4			" shiftwidth
 set ts=4			" tabstop
-set number			" show line numbers
-set colorcolumn=80  " 80 columns
+set number		    " show line numbers
+"set colorcolumn=80  " 80 columns
+set colorcolumn=100  " 100 columns
 
 set nofoldenable    " disable folding
 set cursorline      " highlight cursor line
@@ -106,13 +113,17 @@ nmap <leader>l :set list!<CR>
 "nnoremap <silent> <s-enter> :exe 'silent! normal! zr'<cr>
 "nnoremap <silent> <c-enter> :exe 'silent! normal! zM'<cr>
 
+" vim-localvimrc
+" --------------------------------------
+let g:localvimrc_ask=0
+
 " syntastic
 " --------------------------------------
 " Toggle the file tree of the current file
 nnoremap <c-f> :TagbarToggle<CR>
 " Auto open for TagBar
 autocmd VimEnter * nested :call tagbar#autoopen(1)
-let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+let g:tagbar_ctags_bin = '/usr/bin/ctags'
 
 " syntastic
 " --------------------------------------
@@ -121,6 +132,10 @@ let g:syntastic_enable_signs=1
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=2
 " let g:syntastic_debug=1 " useful when debugging syntastic
+
+" syntastic (python)
+" --------------------------------------
+let g:syntastic_python_checkers=['flake8']
 
 " YCM
 " --------------------------------------
@@ -145,14 +160,14 @@ let g:ycm_complete_in_strings = 1
 " --------------------------------------
 set laststatus=2 								" force display of status bar
 let g:airline_powerline_fonts = 1 				" powerline for status bar or tabline
-"let g:airline#extensions#tabline#enabled = 1	" make tab looks like vim in terminal
+let g:airline#extensions#tabline#enabled = 1	" make tab looks like vim in terminal
 
 " ctrl-p
 " --------------------------------------
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 " Set a custom ignore
 let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(sw.|ico|git|svn))$'
-let g:ctrlp_working_path_mode = 'c'
+"let g:ctrlp_working_path_mode = 'c'
 
 " nerd commenter
 " --------------------------------------
@@ -204,11 +219,44 @@ let g:syntastic_json_checkers = ['jsonlint']
 
 " -- cpp
 " --------------------------------------
+au FileType cpp setlocal sw=2 ts=2
 let g:syntastic_cpp_compiler_options=' -std=c++11 -stdlib=libc++'
+
+function! FormatMacro(column)
+    let [lnum1, col1] = getpos("'<")[1:2]
+    let [lnum2, col2] = getpos("'>")[1:2]
+    let lines = getline(lnum1, lnum2)
+    let lines[-1] = lines[-1][: col2 - 2]
+    let lines[0] = lines[0][col1 - 1:]
+    for line in lines
+        let len = strlen(line)
+        if len < a:column
+            execute "normal! $"
+            let chr = line[len - 1]
+            let suffix = 'a'
+            if chr == '\'
+                let suffix = 'i'
+            endif
+            execute "normal! " . (a:column - len) . suffix . " "
+            if chr != '\'
+                execute "normal! r\\"
+            endif
+        endif
+    endfor
+endfunction
 
 " -- python
 " --------------------------------------
-au FileType python setl shiftwidth=4 softtabstop=4 tabstop=8 expandtab
+au FileType python setl shiftwidth=4 softtabstop=4 tabstop=4 expandtab
+
+" -- colorscheme fixing
+" --------------------------------------
+au FileType * hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
+
+" -- boost.build missing ftdetect
+" --------------------------------------
+au BufNewFile,BufRead Jamfile.v2 setlocal filetype=bbv2
+au BufNewFile,BufRead Jamroot.v2 setlocal filetype=bbv2
 
 " Fonts
 " --------------------------------------
@@ -218,8 +266,6 @@ set t_Co=256
 set encoding=utf-8
 let g:Powerline_symbols = 'fancy'
 set fillchars+=stl:\ ,stlnc:\
-
-NeoBundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 if has("gui_running")
 else
