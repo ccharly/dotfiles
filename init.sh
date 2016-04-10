@@ -12,7 +12,7 @@ make_home_symlink() {
 }
 
 has() {
-    if ! which $1; then
+    if ! which $1 > /dev/null 2> /dev/null; then
       echo "error: install '$1' first"
       exit 1
     fi
@@ -37,14 +37,17 @@ if [ ! -e $HOME/.vim/bundle/neobundle.vim ]; then
 fi
 
 # Get powerline-fonts
-if [ ! -e /tmp/powerline-fonts ]; then
-    git clone https://github.com/Lokaltog/powerline-fonts.git /tmp/powerline-fonts
+if [ ! -e $HOME/powerline-fonts ]; then
+    git clone https://github.com/Lokaltog/powerline-fonts.git $HOME/powerline-fonts
 fi
-bash /tmp/powerline-fonts/install.sh # Does not work with `sh`..
+bash $HOME/powerline-fonts/install.sh # Does not work with `sh`..
 
 make_symlink      "dot.vim" ".vim"
 make_home_symlink "dot.vimrc" ".vim/vimrc" ".vimrc"
 make_home_symlink "dot.vimrc.plugins" ".vim/vimrc.plugins" ".vimrc.plugins"
+
+make_symlink "dot.gitconfig" ".gitconfig"
+make_symlink "dot.zshrc" ".zshrc"
 
 # Everything is done now!
 echo "Done!"

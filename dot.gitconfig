@@ -1,0 +1,12 @@
+[user]
+    name  = Charly Chevalier
+    email = charlyy.chevalier@gmail.com
+
+[alias]
+    st = status
+    br = branch
+    co = checkout
+    lg = log --pretty=oneline
+
+[core]
+    editor = vim
