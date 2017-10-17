@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
-PWD=$( pwd )
+THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+THIS_TMP="$( mktemp -d )"
 
 make_symlink() {
-	ln -sf $PWD/$1 $HOME/$2
+	ln -sf $THIS_DIR/$1 $HOME/$2
 }
 
 make_home_symlink() {
@@ -11,43 +12,55 @@ make_home_symlink() {
 	ln -sf $HOME/$2 $HOME/$3
 }
 
-has() {
-    if ! which $1 > /dev/null 2> /dev/null; then
-      echo "error: install '$1' first"
-      exit 1
+make_vim_old_rec() {
+    if [ -e "$1" ]; then
+        make_vim_old_rec $1.old
+    else
+        echo $1
     fi
 }
 
-# Move to init.sh directory
-cd $( dirname $0 )
+make_vim_old() {
+    make_vim_old_rec $HOME/.vim.old
+}
 
-# Check required stuff
-has curl
-has ctags
+##
+echo ":: Let's go"
 
-# Move existing .vim/ to .vim.$$.bk if existing
-if [ -e $HOME/.vim ] && [ ! -e $HOME/.vim/vimrc.plugins ]; then
-	echo "Backing up your old .vim directory"
-  	mv $HOME/.vim $HOME/.vim.$$.bk
+## Powerline-fonts
+git clone https://github.com/Lokaltog/powerline-fonts.git $THIS_TMP/powerline-fonts
+$THIS_TMP/powerline-fonts/install.sh
+
+## Pathogen
+mkdir -p dot.vim/autoload
+curl -LSso dot.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+## Install vim addons
+mkdir -p dot.vim/bundle
+cd dot.vim/bundle
+git clone https://github.com/tpope/vim-fugitive
+git clone https://github.com/scrooloose/nerdtree
+git clone https://github.com/scrooloose/syntastic
+git clone https://github.com/tpope/vim-surround
+git clone https://github.com/kien/ctrlp.vim
+git clone https://github.com/altercation/vim-colors-solarized
+git clone https://github.com/bling/vim-airline
+git clone https://github.com/majutsushi/tagbar
+git clone https://github.com/valloric/youcompleteme
+git clone https://github.com/altercation/vim-colors-solarized
+git clone https://github.com/flazz/vim-colorschemes
+
+
+## Backing up if possible
+if [ -e "$HOME/.vim" ]; then
+    OLD_VIM="$( make_vim_old )"
+	echo ":: .vim -> $OLD_VIM"
+  	mv $HOME/.vim $OLD_VIM
 fi
 
-# Get NeoBundle for vim
-if [ ! -e $HOME/.vim/bundle/neobundle.vim ]; then
-    curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
-fi
-
-# Get powerline-fonts
-if [ ! -e $HOME/powerline-fonts ]; then
-    git clone https://github.com/Lokaltog/powerline-fonts.git $HOME/powerline-fonts
-fi
-bash $HOME/powerline-fonts/install.sh # Does not work with `sh`..
-
-make_symlink      "dot.vim" ".vim"
+##
+make_symlink "dot.vim" ".vim"
 make_home_symlink "dot.vimrc" ".vim/vimrc" ".vimrc"
-make_home_symlink "dot.vimrc.plugins" ".vim/vimrc.plugins" ".vimrc.plugins"
 
-make_symlink "dot.gitconfig" ".gitconfig"
-make_symlink "dot.zshrc" ".zshrc"
-
-# Everything is done now!
-echo "Done!"
+##
+echo ":: Done!"
