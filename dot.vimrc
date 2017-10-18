@@ -8,7 +8,8 @@ filetype plugin indent on
 
 " Current colorscheme
 set bg=light
-colorscheme Monokai
+"colorscheme liquidcarbon
+colorscheme 256-grayvim
 
 " Set mapleader
 let mapleader="\<Space>"
@@ -144,7 +145,7 @@ au BufWinEnter * let w:m1=matchadd('WhitespaceEOL', '\s\+$', -1)
 au VimEnter * hi CursorLine cterm=bold
 au InsertEnter * setl nocursorline 	" do not highlight in insert mode
 au InsertLeave * setl cursorline 	" highlight out of insert mode
-hi CursorLine cterm=reverse ctermbg=4 guibg=#3A3A3A
+hi CursorLine cterm=reverse ctermbg=237
 
 " Fonts (https://coderwall.com/p/yiot4q)
 set t_Co=256
