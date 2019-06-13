@@ -1,0 +1,94 @@
+" Basic setup
+syntax on
+set expandtab
+filetype plugin indent on
+
+let mapleader = "\<Space>"
+
+set sw=4			" shiftwidth
+set ts=4			" tabstop
+set number			" show line numbers
+set colorcolumn=100 " 100 columns
+
+set cursorline      " highlight cursor line
+set hlsearch        " highlight last search matches
+set incsearch       " show matches as soon as possible
+set autoread        " watch for file changes by other programs
+set ignorecase      " ignore case when searching
+set smartcase       " ... except if there is one uppercase character
+set showmatch       " show the matching bracket when inserting
+set smartindent     " enable smart indentation
+set nowrap          " do not split the line if it is too long
+set cpoptions+=ces$ " make the 'cw' and like commands put a $ at the end
+set backspace=2     " enable backspace
+set scrolloff=8     " keep at least 8 lines after the cusor when scrolling
+
+set wildmenu        " better command line completion menu
+
+" Highlight cursor line
+au VimEnter * hi CursorLine cterm=bold
+au InsertEnter * setl nocursorline 	" do not highlight in insert mode
+au InsertLeave * setl cursorline 	" highlight out of insert mode
+
+" --------------------------------------------------------------------------------------------------
+" Key mappings
+
+" Map H and L to quickly switch tabs
+nnoremap H :tabp<CR>
+nnoremap L :tabn<CR>
+" Map T to quickly add a new tab
+nnoremap T :tabe<CR>
+" Fix moving around wrapped lines
+map j gj
+map k gk
+
+if has("gui_running")
+    set guioptions=emg " Get rid of scrollbars
+else
+	set term=xterm-256color
+	set termencoding=utf-8
+endif
+
+" --------------------------------------------------------------------------------------------------
+" Plugins
+
+" Install and run vim-plug on first run
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Load plugins
+so ~/.vim/vimrc.plugins.vim
+
+" --------------------------------------------------------------------------------------------------
+" Configure plugins
+
+" sheerun/vim-wombat-scheme
+colorscheme seoul256
+
+" ariblade/vim-gitgutter
+highlight GitGutterAdd ctermfg=green ctermbg=NONE
+highlight GitGutterChange ctermfg=yellow ctermbg=NONE
+highlight GitGutterDelete ctermfg=red ctermbg=NONE
+highlight GitGutterChangeDelete ctermfg=yellow ctermbg=NONE
+
+" itchyny/lightline.vim
+set laststatus=2
+let g:lightline = {
+  \     'colorscheme': 'seoul256',
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['gitbranch', 'fileformat', 'fileencoding']]
+  \     },
+  \     'component_function': {
+  \         'gitbranch': 'gitbranch#name'
+  \     }
+  \ }
+
+" junegunn/fzf
+map <C-p> :FZF<CR>
+
+" w0rp/ale
+map <C-c> :ALEDetail<CR>

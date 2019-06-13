@@ -1,7 +1,10 @@
-Easy setup:
+.vim
+====
+
+Move to the git repository and execute:
 
 ```
-cp -rf dot.gitconfig $HOME/.gitconfig
-cp -rf dot.vim $HOME/.vim
-ln -sf $HOME/.vim/vimrc $HOME/.vimrc
+ln -sf $(pwd)/dot.gitconfig $HOME/.gitconfig
+ln -sf $(pwd)/dot.vim $HOME/.vim
+ln -sf $(pwd)/dot.vim/vimrc $HOME/.vimrc
 ```
