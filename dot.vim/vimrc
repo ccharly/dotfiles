@@ -45,8 +45,10 @@ map k gk
 if has("gui_running")
     set guioptions=emg " Get rid of scrollbars
 else
-	set term=xterm-256color
-	set termencoding=utf-8
+    if !has("nvim")
+	    set term=xterm-256color
+	    set termencoding=utf-8
+    endif
 endif
 
 " --------------------------------------------------------------------------------------------------
@@ -59,6 +61,15 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" Useful for Veonim completion
+if exists("veonim")
+    " Extensions for web dev
+    let g:vscode_extensions = [
+        \'ms-vscode.cpptools',
+    \]
+
+endif
+
 " Load plugins
 so ~/.vim/vimrc.plugins.vim
 
@@ -66,7 +77,11 @@ so ~/.vim/vimrc.plugins.vim
 " Configure plugins
 
 " sheerun/vim-wombat-scheme
-colorscheme seoul256
+if exists("veonim")
+    colorscheme veonim
+else
+    colorscheme seoul256
+endif
 
 " ariblade/vim-gitgutter
 highlight GitGutterAdd ctermfg=green ctermbg=NONE
