@@ -16,5 +16,6 @@ Plug 'w0rp/ale'
 Plug 'vim-scripts/Wombat'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
