@@ -107,3 +107,6 @@ map <C-p> :FZF<CR>
 
 " w0rp/ale
 map <C-c> :ALEDetail<CR>
+map <C-j> :ALEGoToDefinitionInTab<CR>
+let g:ale_c_parse_compile_commands = 1
+let g:ale_c_build_dir_names = ['build', 'bin', '.']
