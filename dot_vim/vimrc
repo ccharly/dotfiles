@@ -66,77 +66,24 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Useful for Veonim completion
-if exists("veonim")
-    " Extensions for web dev
-    let g:vscode_extensions = [
-        \'ms-vscode.cpptools',
-    \]
-
-endif
-
 " Load plugins
 " " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-" Make sure you use single quotes
+" --------------------------------------------------------------------------------------------------
+" FZF
 
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-Plug 'junegunn/vim-easy-align'
-
-" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
-Plug 'fatih/vim-go', { 'tag': 'v1.25' }
-let g:go_fmt_command = "gofmt"
-
-" Plugin outside ~/.vim/plugged with post-update hook
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-
-" Other stuffs:
-Plug 'airblade/vim-gitgutter'
-Plug 'bronson/vim-trailing-whitespace'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'itchyny/lightline.vim'
-Plug 'itchyny/vim-gitbranch'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-surround'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'w0rp/ale'
-
-
-" Colorschemes
-Plug 'vim-scripts/Wombat'
-Plug 'junegunn/seoul256.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'joshdick/onedark.vim'
-Plug 'frenzyexists/aquarium-vim', { 'branch': 'develop' }
-let g:aqua_bold = 1
-let g:aquarium_style="dark"
-
-" Initialize plugin system
-call plug#end()
+map <C-p> :FZF<CR>
+map <C-f> :Ag<CR>
 
 " --------------------------------------------------------------------------------------------------
-" Configure plugins
+" Lightline (pretty status bar)
 
-" sheerun/vim-wombat-scheme
-if exists("veonim")
-    colorscheme veonim
-else
-    colorscheme onedark
-endif
-
-" ariblade/vim-gitgutter
-highlight GitGutterAdd ctermfg=green ctermbg=NONE
-highlight GitGutterChange ctermfg=yellow ctermbg=NONE
-highlight GitGutterDelete ctermfg=red ctermbg=NONE
-highlight GitGutterChangeDelete ctermfg=yellow ctermbg=NONE
-
-" itchyny/lightline.vim
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
 set laststatus=2
 let g:lightline = {
   \     'colorscheme': 'one',
@@ -149,10 +96,10 @@ let g:lightline = {
   \     }
   \ }
 
-" junegunn/fzf
-map <C-p> :FZF<CR>
+" --------------------------------------------------------------------------------------------------
+" LSP + Autocomplete + IDE like
 
-" w0rp/ale
+Plug 'w0rp/ale'
 map <C-c> :ALEDetail<CR>
 map <C-j> :ALEGoToDefinition<CR>
 map <C-h> <C-o>
@@ -164,5 +111,43 @@ let g:ale_c_parse_compile_commands = 1
 let g:ale_c_build_dir_names = ['build', '_build.simu', 'bin', '.']
 let g:ale_sign_column_always = 1
 
-" vim-go
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sheerun/vim-polyglot'
+
+" --------------------------------------------------------------------------------------------------
+" Languages
+
+Plug 'fatih/vim-go', { 'tag': 'v1.25' }
+let g:go_fmt_command = "gofmt"
 let g:go_fmt_autosave = 0
+
+" --------------------------------------------------------------------------------------------------
+" Colorschemes
+
+Plug 'vim-scripts/Wombat'
+Plug 'junegunn/seoul256.vim'
+Plug 'joshdick/onedark.vim'
+
+" --------------------------------------------------------------------------------------------------
+" Git
+
+Plug 'airblade/vim-gitgutter'
+" ariblade/vim-gitgutter
+highlight GitGutterAdd ctermfg=green ctermbg=NONE
+highlight GitGutterChange ctermfg=yellow ctermbg=NONE
+highlight GitGutterDelete ctermfg=red ctermbg=NONE
+highlight GitGutterChangeDelete ctermfg=yellow ctermbg=NONE
+
+" --------------------------------------------------------------------------------------------------
+" Misc
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-surround'
+
+" Initialize plugin system
+call plug#end()
+
+" Now that plugins has been loaded, we can set our colorscheme
+colorscheme onedark
