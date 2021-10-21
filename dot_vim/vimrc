@@ -1,0 +1,168 @@
+" Basic setup
+syntax on
+filetype plugin indent on
+set expandtab
+set noshowmode
+
+" Enable project-specific settings
+set exrc
+set secure
+
+let mapleader = "\<Space>"
+
+set sw=4			" shiftwidth
+set ts=4			" tabstop
+set number			" show line numbers
+set colorcolumn=100 " 100 columns
+
+set cursorline      " highlight cursor line
+set hlsearch        " highlight last search matches
+set incsearch       " show matches as soon as possible
+set autoread        " watch for file changes by other programs
+set ignorecase      " ignore case when searching
+set smartcase       " ... except if there is one uppercase character
+set showmatch       " show the matching bracket when inserting
+set smartindent     " enable smart indentation
+set nowrap          " do not split the line if it is too long
+set cpoptions+=ces$ " make the 'cw' and like commands put a $ at the end
+set backspace=2     " enable backspace
+set scrolloff=8     " keep at least 8 lines after the cusor when scrolling
+
+set wildmenu        " better command line completion menu
+
+" Highlight cursor line
+au VimEnter * hi CursorLine cterm=bold
+au InsertEnter * setl nocursorline 	" do not highlight in insert mode
+au InsertLeave * setl cursorline 	" highlight out of insert mode
+
+" --------------------------------------------------------------------------------------------------
+" Key mappings
+
+" Map H and L to quickly switch tabs
+nnoremap H :tabp<CR>
+nnoremap L :tabn<CR>
+" Map T to quickly add a new tab
+nnoremap T :tabe<CR>
+" Fix moving around wrapped lines
+map j gj
+map k gk
+
+if has("gui_running")
+    set guioptions=emg " Get rid of scrollbars
+else
+    if !has("nvim")
+	    set term=xterm-256color
+	    set termencoding=utf-8
+    endif
+endif
+
+" --------------------------------------------------------------------------------------------------
+" Plugins
+
+" Install and run vim-plug on first run
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Useful for Veonim completion
+if exists("veonim")
+    " Extensions for web dev
+    let g:vscode_extensions = [
+        \'ms-vscode.cpptools',
+    \]
+
+endif
+
+" Load plugins
+" " Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+" Make sure you use single quotes
+
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
+
+" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+Plug 'fatih/vim-go', { 'tag': 'v1.25' }
+let g:go_fmt_command = "gofmt"
+
+" Plugin outside ~/.vim/plugged with post-update hook
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" Other stuffs:
+Plug 'airblade/vim-gitgutter'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-surround'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'w0rp/ale'
+
+
+" Colorschemes
+Plug 'vim-scripts/Wombat'
+Plug 'junegunn/seoul256.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'joshdick/onedark.vim'
+Plug 'frenzyexists/aquarium-vim', { 'branch': 'develop' }
+let g:aqua_bold = 1
+let g:aquarium_style="dark"
+
+" Initialize plugin system
+call plug#end()
+
+" --------------------------------------------------------------------------------------------------
+" Configure plugins
+
+" sheerun/vim-wombat-scheme
+if exists("veonim")
+    colorscheme veonim
+else
+    colorscheme onedark
+endif
+
+" ariblade/vim-gitgutter
+highlight GitGutterAdd ctermfg=green ctermbg=NONE
+highlight GitGutterChange ctermfg=yellow ctermbg=NONE
+highlight GitGutterDelete ctermfg=red ctermbg=NONE
+highlight GitGutterChangeDelete ctermfg=yellow ctermbg=NONE
+
+" itchyny/lightline.vim
+set laststatus=2
+let g:lightline = {
+  \     'colorscheme': 'one',
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['gitbranch', 'fileformat', 'fileencoding']]
+  \     },
+  \     'component_function': {
+  \         'gitbranch': 'gitbranch#name'
+  \     }
+  \ }
+
+" junegunn/fzf
+map <C-p> :FZF<CR>
+
+" w0rp/ale
+map <C-c> :ALEDetail<CR>
+map <C-j> :ALEGoToDefinition<CR>
+map <C-h> <C-o>
+inoremap <Tab> <C-n>
+inoremap <C-j> <C-n>
+inoremap <C-k> <C-p>
+"let g:ale_completion_enabled = 1
+let g:ale_c_parse_compile_commands = 1
+let g:ale_c_build_dir_names = ['build', '_build.simu', 'bin', '.']
+let g:ale_sign_column_always = 1
+
+" vim-go
+let g:go_fmt_autosave = 0
